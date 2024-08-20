@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial: Promesas en JavaScript</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <h1>Promesas en JavaScript</h1>
+    
+    <p>Las promesas en JavaScript son objetos que representan la eventual finalización (o fallo) de una operación asíncrona. Proporcionan una forma más elegante y poderosa de manejar código asíncrono en comparación con los callbacks tradicionales.</p>
+    
+    <h2>¿Qué es una Promesa?</h2>
+    <p>Una promesa es un objeto que puede estar en uno de tres estados:</p>
+    <ul>
+        <li><strong>Pendiente (Pending):</strong> Estado inicial, ni cumplido ni rechazado.</li>
+        <li><strong>Cumplido (Fulfilled):</strong> La operación se completó con éxito.</li>
+        <li><strong>Rechazado (Rejected):</strong> La operación falló.</li>
+    </ul>
+
+    <h2>Creación de una Promesa</h2>
+    <code>
+const miPromesa = new Promise((resolve, reject) => {
+    // Operación asíncrona
+    if (/* operación exitosa */) {
+        resolve(resultado);
+    } else {
+        reject(error);
+    }
+});
+    </code>
+
+    <h2>Uso de una Promesa</h2>
+    <code>
+miPromesa
+    .then((resultado) => {
+        console.log('Éxito:', resultado);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    </code>
+
+    <h2>Encadenamiento de Promesas</h2>
+    <p>Las promesas se pueden encadenar, lo que es útil para secuencias de operaciones asíncronas.</p>
+    <code>
+promesa1()
+    .then(resultado1 => promesa2(resultado1))
+    .then(resultado2 => promesa3(resultado2))
+    .then(resultadoFinal => {
+        console.log('Resultado final:', resultadoFinal);
+    })
+    .catch(error => {
+        console.error('Error en alguna parte de la cadena:', error);
+    });
+    </code>
+
+    <h2>Promise.all()</h2>
+    <p>Ejecuta múltiples promesas en paralelo y espera a que todas se completen.</p>
+    <code>
+Promise.all([promesa1(), promesa2(), promesa3()])
+    .then(([resultado1, resultado2, resultado3]) => {
+        console.log('Todos los resultados:', resultado1, resultado2, resultado3);
+    })
+    .catch(error => {
+        console.error('Al menos una promesa falló:', error);
+    });
+    </code>
+
+    <h2>async/await</h2>
+    <p>Una sintaxis más moderna y legible para trabajar con promesas.</p>
+    <code>
+async function miFuncionAsincrona() {
+    try {
+        const resultado = await miPromesa();
+        console.log('Resultado:', resultado);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+    </code>
+
+    <div class="ejemplo">
+        <h3>Ejemplo Práctico</h3>
+        <code>
+function simularPeticionHTTP(exito = true) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (exito) {
+                resolve({ id: 1, nombre: 'Producto' });
+            } else {
+                reject(new Error('Error en la petición'));
+            }
+        }, 2000);
+    });
+}
+
+// Uso de la promesa
+simularPeticionHTTP()
+    .then(datos => console.log('Datos recibidos:', datos))
+    .catch(error => console.error('Error:', error.message));
+
+// Con async/await
+async function obtenerDatos() {
+    try {
+        const datos = await simularPeticionHTTP();
+        console.log('Datos recibidos con async/await:', datos);
+    } catch (error) {
+        console.error('Error con async/await:', error.message);
+    }
+}
+
+obtenerDatos();
+        </code>
+    </div>
+
+    <div class="nota">
+        <strong>Nota:</strong> Las promesas son fundamentales en JavaScript moderno y son la base de muchas APIs asíncronas en el navegador y en Node.js.
+    </div>
+    <script src="js/soluciones-promesas-javascript.js"></script>
+</body>
+</html>
